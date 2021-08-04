@@ -1,0 +1,117 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    
+    <title>Blogify</title>
+    
+    <style>
+        *{
+            font-family: 'Roboto', sans-serif;
+            
+        }
+    </style>
+    
+  </head>
+  <body>
+
+    <nav class="navbar navbar-expand-lg navbar-white bg-white">
+        <a class="navbar-brand " href="{% url 'post_list' %}">Blogify</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'post_list' %}">Home</a>
+            </li>
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'post_create' %}">Add Posts</a>
+                </li>
+                {% if user.is_superuser %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'category_add' %}">Add Categories</a>
+                    </li>
+                {% endif %}
+            {% endif %}
+
+            {% if cat_menu %}
+                <li class="dropdown mr-3">
+                <a class="nav-link dropdown-toggle" href="#" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Categories
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                    {% for item in cat_menu %}
+                        <a class="dropdown-item" href="{% url 'category' item|slugify %}">{{item}}</a>
+                    {% endfor %}
+                </div>
+                </li>
+            {% endif %}
+
+            <form class="form-inline my-2 my-lg-0" action="{% url 'search_results' %}" method="get">
+                <input class="form-control mr-sm-2" name="q" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+            
+            {% comment %} <form class="form-inline">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form> {% endcomment %}
+            
+            </ul>
+            
+            {% if user.is_authenticated %}
+            <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                    <a class="nav-link dropdown-toggle" href="#" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ user.username }}
+                    </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+                    {% if user.profile.id %}
+                        <a class="dropdown-item" href="{% url 'edit_profile_page' user.id %}">Edit Profile</a>   
+                        <a class="dropdown-item" href="{% url 'show_profile_page' user.id %}">Show User Profile</a>
+                    {% else %}
+                        <a class="dropdown-item" href="{% url 'create_profile_page'%}">Create Profile Page</a>
+                    {% endif %}                               
+                    
+                    <a class="dropdown-item" href="{% url 'password_change'%}">Change password</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'logout' %}">Log Out</a>
+                </div>
+                </li>
+            </ul>
+            {% else %}
+                <form class="form-inline ml-auto">
+                    <a href="{% url 'login' %}" class="btn btn-outline-secondary"> Log In</a>
+                    <a href="{% url 'signup' %}" class="btn btn-primary ml-2">Sign up</a>
+                </form>
+                
+            {% endif %}
+        </div>
+    </nav>
+    <hr>
+    <div class="m-0 p-0 container-fluid">
+        
+        {% block content %}
+        {% endblock content %}
+    </div>
+
+
+    <script src="{% static 'js/main.js'%}"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>

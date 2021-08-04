@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}User Profile Page{% endblock title %}
+
+{% block content %}
+    <div class="container bcontent">
+        <h1 class="text-danger title text-center mb-5 mt-4">User Profile</h1>
+        <div style=" height: 180px" class="card mb-3">
+            <div class="row no-gutters">
+                <div class="col-md-2">
+                {% if page_user.profile_pic %}   
+                    <img style=" height: 178px" class="card-img" src="{{page_user.profile_pic.url}}" alt="No Image Upload">
+                {% else %}
+                    <img style=" height: 178px" class="card-img" src="{% static 'images/avatar.jpg' %}" alt="No Image Upload">
+                {% endif %}
+                </div>
+                <div class="col-md-7">
+                    <div class="card-body">
+                        <h5 class="card-title ml-3">{{page_user.first_name}} {{page_user.last_name}}</h5>
+                        <small class="text-muted ml-3">
+                            {% if page_user.facebook_url %}
+                                <a style="text-decoration:none;" target="_blank" href="{{page_user.facebook_url}}">Facebook</a> |
+                            {% endif %}
+
+                            {% if page_user.instagram_url %}    
+                                <a style="text-decoration:none;" target="_blank" href="{{page_user.instagram_url}}">Instagram</a> |
+                            {% endif %}    
+                            
+                            {% if page_user.twitter_url %}
+                                <a style="text-decoration:none;" target="_blank" href="{{page_user.twitter_url}}">Twitter</a>        
+                            {% endif %} 
+                        </small>
+                        <p class="card-text ml-3">{{page_user.bio}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock content %}
+
+
+
+

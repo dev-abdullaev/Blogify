@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Create User Profile Page{% endblock title %}
+
+{% block content %}
+<div class="container">
+<h1 class='title mt-4 text-center text-primary'>Create Profile Page</h1>
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <form action="" method='post' enctype="multipart/form-data">{% csrf_token %}
+                {{form|crispy}}
+                <button class="btn btn-primary" type='submit'>Create</button>
+                <br><br>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

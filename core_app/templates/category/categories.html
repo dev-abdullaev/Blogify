@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+    <div class="container px-5">
+        <div class="row justify-content-center">
+            {% for post in category_list %}
+                <div class="col-lg-10">
+                    <div class="card mt-5">
+                        <div class="card-body">
+                            {% if not post.author.profile.profile_pic %}
+                                <img style='width:25px; height:25px;' class="rounded-circle" src="{% static 'images/avatar.jpg' %}" alt="">
+                            {% else %}
+                                <img style='width:25px; height:25px;' class="rounded-circle" src="{{post.author.profile.profile_pic.url}}" alt="No Image...">
+                            
+                            {% endif %}
+                            
+                            {% if not post.author.profile.first_name and not post.author.profile.last_name  %} 
+                                <strong class='text-success'><a class='text-success' style="text-decoration:none;" href="{% url 'show_profile_page' post.author.profile.id %}"><i>{{user.username|capfirst}}</i></a></strong>
+                            {% else %} 
+                                <strong class='text-success'><a class='text-success' style="text-decoration:none;" href="{% url 'show_profile_page' post.author.profile.id %}" ><i>{{post.author.profile.first_name}} {{post.author.profile.last_name}}</i></a></strong>
+                            
+                            {% endif %}
+                            
+                            <h4 class="card-title font-weight-bold mt-2"><a style='text-decoration: none' href="{{post.get_absolute_url}}">{{post.title}}</a></h4>
+                            <p class="card-text">{{post.snippet|truncatechars:100}}</p>
+                            <p class="text-muted">Posted on {{post.created}} • <a style='background-color:#f2f2f2;' class="badge badge-pill text-dark p-2">{{post.category}}</a> </p>
+                            <a href="{{post.get_absolute_url}}" class="btn btn-primary">Read More</a>
+                            {% if user.id == post.author.id %}
+                                <a href="{% url 'post_update' post.pk %}" class="btn btn-info">Update</a>
+                                <a href="{% url 'post_delete' post.pk %}" class="btn btn-danger">Delete</a>
+                            {% endif %}
+                        </div>
+                    </div>
+            {% endfor %}
+           
+        </div>
+    </div>
+<br><br>
+
+{% endblock content %}
